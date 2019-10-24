@@ -5,10 +5,12 @@ import numpy as np;
 from sklearn.utils import shuffle
 from sklearn.model_selection import StratifiedKFold;
 
+testX,testY = [[],[]];
+
 def calcKDE(train,bandwith,feat):
     return KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(np.array(train)[:,[feat]]);
     
-def calcB(Xs,Ys, train, validation, bandwith):
+def calcB(Xs,Ys, train, validation, bandwith,test):
     trainFalse = [];
     trainTrue = [];
     for i in train:
@@ -26,6 +28,10 @@ def calcB(Xs,Ys, train, validation, bandwith):
     			kde[c].append(calcKDE(trainTrue,bandwith,f));
     		else:
     			kde[c].append(calcKDE(trainFalse,bandwith,f));
+    if test:
+        return (1-score(testX,testY),lnTrue,lnFalse,kde);
+    else:
+        return (1-score(Xs[train],Ys[train]),lnTrue,lnFalse,kde),(1-score(Xs[validation],Ys[validation],lnTrue,lnFalse,kde));
     '''
     predict = predict(train, lnTrue, lnFalse);
     toSum = calcKDE(trainTrue,validation,bandwith);
@@ -38,14 +44,28 @@ def calcB(Xs,Ys, train, validation, bandwith):
         return trueSum;
     '''
 def predict(X, pTrue, pFalse):
+    #TODO: 
     
-def score(X,Y, pTrue, pFalse):
-    return accuracy_score(Y, predict(X,pTrue, pFalse));
+def score(X,Y, pTrue, pFalse,kde):
+    return accuracy_score(Y, predict(X,pTrue, pFalse,kde));
         
+#Returns Best bandwidth
 def kFolds(Ys,Xs,k,values):
     kf = StratifiedKFold(k);
-    for train,valid in kf.split(Ys,Ys):
-        calcB(Xs,Ys,train, valid,0.02);
+    bandwith = 0.02;
+    bestBandwidth = 0;
+    bestVError = 999999;
+    while bandwith <= 0.6:
+        tError, vError = 0;
+        for train,valid in kf.split(Ys,Ys):
+            trainError,validError = calcB(Xs,Ys,train, valid,bandwith,false);
+            tError+=trainError;
+            vError+=validError;
+        if vError/5 < bestVError:
+            bestVError = vError/5;
+            bestBandwidth = bandwith;
+        bandwith+=0.02;
+    return bandwith;
 
 
 def stats(values):
@@ -56,7 +76,7 @@ def stats(values):
     Xs = (Xs-means)/stdevs;
     return Xs,Ys;
 
-def getValuesFromFile(fileName):
+def readFromFile(fileName):
     text = open(fileName).readlines();
     values = [];
     for lin in text:
@@ -65,9 +85,20 @@ def getValuesFromFile(fileName):
         for i, l in enumerate(va):
             va[i] = float(l);
         values.append(va);
+    return values;
+def getValuesFromFile(trainFileName,testFileName):
+    values = readFromFile(trainFileName);
     shuffle(values);
     Xs,Ys = stats(values);
-    kFolds(Ys,Xs,5,values);
-    return values;
+    bestBandwidth = kFolds(Ys,Xs,5,values);
+    #TODO: Ler test file e temos de fazer split sobre todo o split sobre todo o trainX e trainY, calc prob, fit e por fim score sobre o ficheiro TEST
+    # Deve ficar algo assim:
+    values = values = readFromFile(testFileName);
+    shuffle(values);
+    testX, testY = stats(values)
+    score = calcB(Xs,Ys,enumerate(Xs), [0],bestBandwidth,true);
+    return bestBandwidth,score;
 
-getValuesFromFile("TP1_train.tsv");
+bestBandwidth,score = getValuesFromFile("TP1_train.tsv","TP1_test.tsv");
+print('Naive Bayes retrained with the complete training set using best bandwith =', best_bandwidth);
+print('Estimate test error:', score);
