@@ -6,8 +6,7 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import StratifiedKFold;
 
 def calcKDE(train,bandwith,feat):
-	print(train[:,[feat]]);
-    #return KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(train[:,[feat]]);
+    return KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(np.array(train)[:,[feat]]);
     
 def calcB(Xs,Ys, train, validation, bandwith):
     trainFalse = [];
@@ -19,15 +18,15 @@ def calcB(Xs,Ys, train, validation, bandwith):
             trainFalse.append(list(Xs[i]));
     lnTrue = np.log(len(trainTrue)/len(train));
     lnFalse = np.log(len(trainFalse)/len(train));
-    print(calcKDE(trainTrue,bandwith,1));
-    '''
+    kde = [[],[]]
     for f in range(4):
     	for c in range(2):
     		if(c==0):
-    			print(calcKDE(trainTrue,bandwith,f))
+    			kde[c].append(calcKDE(trainTrue,bandwith,f));
     		else:
-    			print(calcKDE(trainFalse,bandwith,f))
+    			kde[c].append(calcKDE(trainFalse,bandwith,f));
     
+    '''
     toSum = calcKDE(trainTrue,validation,bandwith);
 	summ = sum(toSum);
     falseSum = summ + lnFalse;
