@@ -6,25 +6,28 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import StratifiedKFold;
 
 def calcKDE(train,bandwith,feat):
-    return KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(train[feat]);
+	print(train[:,[feat]]);
+    #return KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(train[:,[feat]]);
     
-def calcB(values, train, validation, bandwith):
+def calcB(Xs,Ys, train, validation, bandwith):
     trainFalse = [];
     trainTrue = [];
     for i in train:
-        if values[i][4] == 1.000:
-            trainTrue.append(values[i]);
+        if Ys[i] == 1.000:
+            trainTrue.append(list(Xs[i]));
         else:
-            trainFalse.append(values[i]);
+            trainFalse.append(list(Xs[i]));
     lnTrue = np.log(len(trainTrue)/len(train));
     lnFalse = np.log(len(trainFalse)/len(train));
+    print(calcKDE(trainTrue,bandwith,1));
+    '''
     for f in range(4):
     	for c in range(2):
     		if(c==0):
     			print(calcKDE(trainTrue,bandwith,f))
     		else:
     			print(calcKDE(trainFalse,bandwith,f))
-    '''
+    
     toSum = calcKDE(trainTrue,validation,bandwith);
 	summ = sum(toSum);
     falseSum = summ + lnFalse;
@@ -38,12 +41,12 @@ def calcB(values, train, validation, bandwith):
 def kFolds(Ys,Xs,k,values):
     kf = StratifiedKFold(k);
     for train,valid in kf.split(Ys,Ys):
-        calcB(values,train, valid,0.02);
+        calcB(Xs,Ys,train, valid,0.02);
 
 
 def stats(values):
     Ys = np.array(values)[:,4];
-    Xs = np.array(values)[:,:3];
+    Xs = np.array(values)[:,:4];
     means = np.mean(Xs,0);
     stdevs = np.std(Xs,0);
     Xs = (Xs-means)/stdevs;
