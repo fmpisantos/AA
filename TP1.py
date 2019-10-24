@@ -18,24 +18,16 @@ def calcB(Xs,Ys, train, validation, bandwith):
             trainFalse.append(list(Xs[i]));
     lnTrue = np.log(len(trainTrue)/len(train));
     lnFalse = np.log(len(trainFalse)/len(train));
-<<<<<<< HEAD
     kde = [[],[]]
-=======
-<<<<<<< Updated upstream
     print(calcKDE(trainTrue,bandwith,1));
-    '''
-=======
-    predict = predict(train, lnTrue, lnFalse);
->>>>>>> Stashed changes
->>>>>>> master
     for f in range(4):
     	for c in range(2):
     		if(c==0):
     			kde[c].append(calcKDE(trainTrue,bandwith,f));
     		else:
     			kde[c].append(calcKDE(trainFalse,bandwith,f));
-    
     '''
+    predict = predict(train, lnTrue, lnFalse);
     toSum = calcKDE(trainTrue,validation,bandwith);
 	summ = sum(toSum);
     falseSum = summ + lnFalse;
