@@ -29,32 +29,17 @@ def calcB(Xs,Ys, train, validation, bandwith,test):
     		else:
     			kde[c].append(calcKDE(trainFalse,bandwith,f));
     if test:
-        return 0;
-       # return (1-score(np.array(testX),np.array(testY),lnTrue,lnFalse,kde));
+        return (1-score(np.array(testX),np.array(testY),lnTrue,lnFalse,kde));
     else:
         return (1-score(Xs[train],Ys[train],lnTrue,lnFalse,kde)),(1-score(Xs[validation],Ys[validation],lnTrue,lnFalse,kde));
-    '''
-    Nao sei se precisas disto, se nao precisares apaga
-                        |
-                        |
-                        V
-    predict = predict(train, lnTrue, lnFalse);
-    toSum = calcKDE(trainTrue,validation,bandwith);
-	summ = sum(toSum);
-    falseSum = summ + lnFalse;
-    trueSum = summ + lnTrue;
-    if falseSum > trueSum:
-        return falseSum;
-    else:
-        return trueSum;
-    '''
+    
 def predict(X, pTrue, pFalse,kde):
     probFalse = np.repeat(pFalse, X.shape[0]);
     probTrue = np.repeat(pTrue, X.shape[0]);
     best = [];
     for i in range(X.shape[1]):
         probFalse += kde[0][i].score_samples(np.array(X)[:,[i]]);
-        probFalse += kde[1][i].score_samples(np.array(X)[:,[i]]);
+        probTrue += kde[1][i].score_samples(np.array(X)[:,[i]]);
     for j in range(X.shape[0]):
         if probFalse[j]>probTrue[j]:
             best.append(0);
@@ -77,8 +62,8 @@ def kFolds(Ys,Xs,k,values):
             trainError,validError = calcB(Xs,Ys,train, valid,bandwith,False);
             tError+=trainError;
             vError+=validError;
-        if vError/5 < bestVError:
-            bestVError = vError/5;
+        if vError/k < bestVError:
+            bestVError = vError/k;
             bestBandwidth = bandwith;
         bandwith+=0.02;
     return bestBandwidth;
@@ -120,6 +105,5 @@ def getValuesFromFile(trainFileName,testFileName):
     return bestBandwidth,score;
 
 bestBandwidth,scoree = getValuesFromFile("TP1_train.tsv","TP1_test.tsv");
-print(testX);
 print('Naive Bayes retrained with the complete training set using best bandwith =', bestBandwidth);
 print('Estimate test error:', scoree);
