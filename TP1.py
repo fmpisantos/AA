@@ -37,7 +37,7 @@ def calcB(Xs,Ys, train, validation, bandwith):
     else:
         return trueSum;
     '''
-    def predict(X, pTrue, pFalse):
+def predict(X, pTrue, pFalse):
         
         
 def kFolds(Ys,Xs,k,values):
