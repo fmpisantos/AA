@@ -33,6 +33,10 @@ def calcB(Xs,Ys, train, validation, bandwith,test):
     else:
         return (1-score(Xs[train],Ys[train]),lnTrue,lnFalse,kde),(1-score(Xs[validation],Ys[validation],lnTrue,lnFalse,kde));
     '''
+    Nao sei se precisas disto, se nao precisares apaga
+                        |
+                        |
+                        V
     predict = predict(train, lnTrue, lnFalse);
     toSum = calcKDE(trainTrue,validation,bandwith);
 	summ = sum(toSum);
