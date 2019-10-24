@@ -5,9 +5,8 @@ import numpy as np;
 from sklearn.utils import shuffle
 from sklearn.model_selection import StratifiedKFold;
 
-def calcKDE(train,valid,bandwith):
-    kde = KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(train);
-    return kde.score_samples(valid);
+def calcKDE(train,bandwith):
+    return KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(train);
     
 def calcB(values, train, validation, bandwith):
     trainFalse = [];
@@ -19,14 +18,16 @@ def calcB(values, train, validation, bandwith):
             trainFalse.append(values[i]);
     lnTrue = np.log(len(trainTrue)/len(train));
     lnFalse = np.log(len(trainFalse)/len(train));
-    toSum = calcKDE(train,validation,bandwith);
-    summ = sum(toSum);
+    toSum = calcKDE(trainTrue,validation,bandwith);
+
+    '''summ = sum(toSum);
     falseSum = summ + lnFalse;
     trueSum = summ + lnTrue;
     if falseSum > trueSum:
         return falseSum;
     else:
         return trueSum;
+    '''
     
 def kFolds(Ys,Xs,k,values):
     kf = StratifiedKFold(k);
@@ -56,5 +57,4 @@ def getValuesFromFile(fileName):
     kFolds(Ys,Xs,5,values);
     return values;
 
-getValuesFromFile("TP1_train.tsv");1246
-498
+getValuesFromFile("TP1_train.tsv");
