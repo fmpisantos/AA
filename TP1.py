@@ -4,8 +4,9 @@ from sklearn.svm import SVC;
 import numpy as np;
 from sklearn.utils import shuffle
 from sklearn.model_selection import StratifiedKFold;
+from sklearn.metrics import accuracy_score
 
-testX,testY = [[],[]];
+testX = testY = [[],[]];
 
 def calcKDE(train,bandwith,feat):
     return KernelDensity(kernel='gaussian', bandwidth=bandwith).fit(np.array(train)[:,[feat]]);
@@ -14,24 +15,24 @@ def calcB(Xs,Ys, train, validation, bandwith,test):
     trainFalse = [];
     trainTrue = [];
     for i in train:
-        if Ys[i] == 1.000:
+        if Ys[i] == 1:
             trainTrue.append(list(Xs[i]));
         else:
             trainFalse.append(list(Xs[i]));
     lnTrue = np.log(len(trainTrue)/len(train));
     lnFalse = np.log(len(trainFalse)/len(train));
     kde = [[],[]]
-    print(calcKDE(trainTrue,bandwith,1));
     for f in range(4):
     	for c in range(2):
-    		if(c==0):
+    		if(c==1):
     			kde[c].append(calcKDE(trainTrue,bandwith,f));
     		else:
     			kde[c].append(calcKDE(trainFalse,bandwith,f));
     if test:
-        return (1-score(testX,testY),lnTrue,lnFalse,kde);
+        return 0;
+       # return (1-score(np.array(testX),np.array(testY),lnTrue,lnFalse,kde));
     else:
-        return (1-score(Xs[train],Ys[train]),lnTrue,lnFalse,kde),(1-score(Xs[validation],Ys[validation],lnTrue,lnFalse,kde));
+        return (1-score(Xs[train],Ys[train],lnTrue,lnFalse,kde)),(1-score(Xs[validation],Ys[validation],lnTrue,lnFalse,kde));
     '''
     Nao sei se precisas disto, se nao precisares apaga
                         |
@@ -47,8 +48,19 @@ def calcB(Xs,Ys, train, validation, bandwith,test):
     else:
         return trueSum;
     '''
-def predict(X, pTrue, pFalse):
-    #TODO: 
+def predict(X, pTrue, pFalse,kde):
+    probFalse = np.repeat(pFalse, X.shape[0]);
+    probTrue = np.repeat(pTrue, X.shape[0]);
+    best = [];
+    for i in range(X.shape[1]):
+        probFalse += kde[0][i].score_samples(np.array(X)[:,[i]]);
+        probFalse += kde[1][i].score_samples(np.array(X)[:,[i]]);
+    for j in range(X.shape[0]):
+        if probFalse[j]>probTrue[j]:
+            best.append(0);
+        else:
+            best.append(1);
+    return np.array(best);
     
 def score(X,Y, pTrue, pFalse,kde):
     return accuracy_score(Y, predict(X,pTrue, pFalse,kde));
@@ -60,16 +72,16 @@ def kFolds(Ys,Xs,k,values):
     bestBandwidth = 0;
     bestVError = 999999;
     while bandwith <= 0.6:
-        tError, vError = 0;
+        tError = vError = 0;
         for train,valid in kf.split(Ys,Ys):
-            trainError,validError = calcB(Xs,Ys,train, valid,bandwith,false);
+            trainError,validError = calcB(Xs,Ys,train, valid,bandwith,False);
             tError+=trainError;
             vError+=validError;
         if vError/5 < bestVError:
             bestVError = vError/5;
             bestBandwidth = bandwith;
         bandwith+=0.02;
-    return bandwith;
+    return bestBandwidth;
 
 
 def stats(values):
@@ -91,18 +103,23 @@ def readFromFile(fileName):
         values.append(va);
     return values;
 def getValuesFromFile(trainFileName,testFileName):
+   
     values = readFromFile(trainFileName);
     shuffle(values);
     Xs,Ys = stats(values);
     bestBandwidth = kFolds(Ys,Xs,5,values);
     #TODO: Ler test file e temos de fazer split sobre todo o split sobre todo o trainX e trainY, calc prob, fit e por fim score sobre o ficheiro TEST
     # Deve ficar algo assim:
+    
     values = values = readFromFile(testFileName);
     shuffle(values);
-    testX, testY = stats(values)
-    score = calcB(Xs,Ys,enumerate(Xs), [0],bestBandwidth,true);
+    global testX;
+    global testY;
+    testX, testY = stats(values);
+    score = calcB(Xs,Ys,np.array(list(enumerate(Xs)))[:,[0]].flatten(), [0],bestBandwidth,True);
     return bestBandwidth,score;
 
-bestBandwidth,score = getValuesFromFile("TP1_train.tsv","TP1_test.tsv");
-print('Naive Bayes retrained with the complete training set using best bandwith =', best_bandwidth);
-print('Estimate test error:', score);
+bestBandwidth,scoree = getValuesFromFile("TP1_train.tsv","TP1_test.tsv");
+print(testX);
+print('Naive Bayes retrained with the complete training set using best bandwith =', bestBandwidth);
+print('Estimate test error:', scoree);
