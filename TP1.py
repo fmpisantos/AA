@@ -38,7 +38,9 @@ def calcB(Xs,Ys, train, validation, bandwith):
         return trueSum;
     '''
 def predict(X, pTrue, pFalse):
-        
+    
+def score(X,Y, pTrue, pFalse):
+    return accuracy_score(Y, predict(X,pTrue, pFalse));
         
 def kFolds(Ys,Xs,k,values):
     kf = StratifiedKFold(k);
