@@ -19,8 +19,12 @@ def calcB(Xs,Ys, train, validation, bandwith):
             trainFalse.append(list(Xs[i]));
     lnTrue = np.log(len(trainTrue)/len(train));
     lnFalse = np.log(len(trainFalse)/len(train));
+<<<<<<< Updated upstream
     print(calcKDE(trainTrue,bandwith,1));
     '''
+=======
+    predict = predict(train, lnTrue, lnFalse);
+>>>>>>> Stashed changes
     for f in range(4):
     	for c in range(2):
     		if(c==0):
@@ -37,7 +41,9 @@ def calcB(Xs,Ys, train, validation, bandwith):
     else:
         return trueSum;
     '''
-    
+    def predict(X, pTrue, pFalse):
+        
+        
 def kFolds(Ys,Xs,k,values):
     kf = StratifiedKFold(k);
     for train,valid in kf.split(Ys,Ys):
