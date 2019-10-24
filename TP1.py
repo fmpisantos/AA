@@ -36,7 +36,6 @@ def calcB(Xs,Ys, train, validation, bandwith):
         return falseSum;
     else:
         return trueSum;
-    '''
     def predict(X, pTrue, pFalse):
         
         
