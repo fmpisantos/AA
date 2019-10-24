@@ -215,8 +215,6 @@ def fit( bandwidth):
                                 # find the distribution using KDE
                                 
                 kde[feat][c] = KernelDensity(bandwidth).fit(mat[c][:,[feat]])
-                print("Here")
-                print(mat[c][:,[feat]])
                    
 def predict(X):
         prob_class_zero = np.repeat(prior[0], X.shape[0])
