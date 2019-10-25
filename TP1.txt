@@ -37,7 +37,26 @@ R6:"gamma defines how much influence a single training example has. The larger g
 Q7: Explique como determinou o melhor parâmetro de bandwidth e gamma para o seu classificador e o classificador SVM. Pode incluir um trecho relevante do código se ajudar a explicar.
 R7: Para determinar o melhor parâmetro de bandwith foi chamada a função kFolds sobre o train que para cada bandwith(começando em 0.02 até 0.6 com um incremento de 0.02) calculando o erro de validação,
 a bandwith que obtiver o menor erro é selecionada como a melhor e usada no set de teste.
-    #TODO FILIPE
+Neste exemplo de código foifeito o cross validation para obter o melhor valor do gamma:
+gamma = 0.2;
+bestGamma = 0;
+bestVError = 99999;
+while gamma <=6:
+	validError = 0;
+	#train e valid são arrays dos indexes de cada fold
+	for train,valid in kk.split(trainYs,trainYs):
+	#Para cada fold calcula-se o valor do do erro que é 1-score
+		validError,pred = crossValidScore(trainXs[train],trainYs[train],trainXs[valid],trainYs[valid],gamma);
+	gammas.append(gamma);
+	errors.append(validError/k);
+	if validError/k < bestVError:
+		bestVError = validError/k;
+		bestGamma = gamma;
+	gammas.append(gamma);
+	errors.append(validError/k);
+	gamma += 0.2;
+#No final o valor do bestGamma e o bestVError correspondem respetivamente ao melhor valor do gamma e ao seu erro(O menor erro encontrado)
+
 
 Q8: Explique como obteve a melhor hipótese para cada um dos classificadores depois de optimizados os parâmetros.
 R8: 
