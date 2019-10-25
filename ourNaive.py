@@ -5,7 +5,7 @@ import numpy as np;
 import matplotlib.pyplot as plt;
 from sklearn.utils import shuffle
 from sklearn.model_selection import StratifiedKFold;
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score;
 
 testX = testY = [[],[]];
 
@@ -102,20 +102,17 @@ def readFromFile(fileName):
             va[i] = float(l);
         values.append(va);
     return values;
-def getValuesFromFile(trainFileName,testFileName):
-   
-    values = readFromFile(trainFileName);
-    shuffle(values);
-    Xs,Ys = stats(values);
-    bestBandwidth = kFolds(Ys,Xs,5,values);
+
+def getValuesFromFile(trainValues,testValues):   
+    shuffle(trainValues);
+    Xs,Ys = stats(trainValues);
+    bestBandwidth = kFolds(Ys,Xs,5,trainValues);
     #TODO: Ler test file e temos de fazer split sobre todo o split sobre todo o trainX e trainY, calc prob, fit e por fim score sobre o ficheiro TEST
     # Deve ficar algo assim:
-    
-    values = values = readFromFile(testFileName);
-    shuffle(values);
+    shuffle(testValues);
     global testX;
     global testY;
-    testX, testY = stats(values);
+    testX, testY = stats(testValues);
     score = calcB(Xs,Ys,np.array(list(enumerate(Xs)))[:,[0]].flatten(), [0],bestBandwidth,True);
     return bestBandwidth,score;
 
