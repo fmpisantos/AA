@@ -3,7 +3,7 @@ from sklearn.naive_bayes import GaussianNB;
 from sklearn.svm import SVC;
 import numpy as np;
 import matplotlib.pyplot as plt;
-from sklearn.utils import shuffle
+from sklearn.utils import shuffle;
 from sklearn.model_selection import StratifiedKFold;
 from sklearn.metrics import accuracy_score;
 
@@ -75,6 +75,7 @@ def kFolds(Ys,Xs,k,values):
         bandwidths.append(bandwith);
         trainErrorA.append(tError/k);
         trainValidA.append(vError/k);
+    '''
     plt.rcParams['axes.facecolor'] = 'lightgrey';
     plt.title('NB');
     plt.xlabel('Bandwith');
@@ -83,6 +84,7 @@ def kFolds(Ys,Xs,k,values):
     plt.plot(bandwidths, trainValidA, '-k', label='Validation error');
     plt.savefig("NB", dpi=300);
     plt.show();
+    '''
     return bestBandwidth;
 
 
@@ -105,12 +107,12 @@ def readFromFile(fileName):
         values.append(va);
     return values;
 
-def getValuesFromFile(trainValues,testValues):   
-    Xs,Ys = stats(trainValues);
+def getValuesFromFile(trainValues,testValues,Xs,Ys,tt, ty):
     bestBandwidth = kFolds(Ys,Xs,5,trainValues);
     global testX;
     global testY;
-    testX, testY = stats(testValues);
+    testX = tt;
+    testY = ty;
     score = calcB(Xs,Ys,np.array(list(enumerate(Xs)))[:,[0]].flatten(), [0],bestBandwidth,True);
     return bestBandwidth,score,best;
 

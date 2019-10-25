@@ -12,10 +12,9 @@ def crossValidScore(trainX,trainY,validX,validY,g):
 		SVMPredicts.append(cl.predict([validX[row]]));
 	return (1-accuracy_score(np.array(validY),np.array(SVMPredicts).flatten()));
 
-def crossValidateGamma(trainValues,k):
+def crossValidateGamma(trainValues,k,trainXs,trainYs,testXs, testYs):
 	gammas = [];
 	errors = [];
-	shuffle(trainValues);
 	trainXs,trainYs = stats(trainValues);
 	kk = StratifiedKFold(k);
 	gamma = 0.2;
@@ -33,6 +32,7 @@ def crossValidateGamma(trainValues,k):
 		gammas.append(gamma);
 		errors.append(errors);
 		gamma += 0.2;
+	'''
 	plt.close();
 	plt.title('SVM');
 	plt.xlabel('Gamma');
@@ -40,9 +40,8 @@ def crossValidateGamma(trainValues,k):
 	plt.plot(gammas,errors,'-r',label='Validation error');
 	plt.savefig("SVM",dpi=300);
 	plt.show();
+	'''
 	return bestGamma,bestVError;
 
-def SVMGetScore(trainValues,testValues,gamma):
-	trainXs,trainYs = stats(trainValues);
-	testXs,testYs = stats(testValues);
+def SVMGetScore(trainValues,testValues,gamma,trainXs,trainYs,testXs, testYs):
 	return crossValidScore(trainXs,trainYs,testXs,testYs,gamma),list(np.array(SVMPredicts).flatten());
