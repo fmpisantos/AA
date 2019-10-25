@@ -36,6 +36,7 @@ def crossValidateGamma(trainValues,k,trainXs,trainYs,testXs, testYs):
 	pp.xlabel('Gamma');
 	pp.ylabel('Error');
 	pp.plot(gammas,errors,'-r',label='Validation error');
+	pp.legend(loc="best");
 	pp.savefig("SVM",dpi=300);
 	pp.show();
 	return bestGamma,bestVError;
