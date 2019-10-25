@@ -31,14 +31,14 @@ def crossValidateGamma(trainValues,k,trainXs,trainYs,testXs, testYs):
 		gammas.append(gamma);
 		errors.append(validError/k);
 		gamma += 0.2;
-    plt.close();
-	plt.title('SVM');
-	plt.xlabel('Gamma');
-	plt.ylabel('Error');
-	plt.plot(gammas,errors,'-r',label='Validation error');
-    plt.legend(loc='best');
-	plt.savefig("SVM",dpi=300);
-	plt.show();
+	pp.close();
+	pp.title('SVM');
+	pp.xlabel('Gamma');
+	pp.ylabel('Error');
+	pp.plot(gammas,errors,'-r',label='Validation error');
+	pp.legend(loc="best");
+	pp.savefig("SVM",dpi=300);
+	pp.show();
 	return bestGamma,bestVError;
 
 def SVMGetScore(gamma,trainXs,trainYs,testXs, testYs):

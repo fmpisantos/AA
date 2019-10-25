@@ -63,7 +63,18 @@ R8:
 
 
 Q9: Mostre os melhores valores dos parâmetros optimizados, a estimativa do erro verdadeiro de cada uma das hipóteses que obteve (o seu classificador e os dois fornecidos pela biblioteca), os intervalos do número esperado de erros dados pelo teste normal aproximado e os valores dos testes de McNemar e discuta o que pode concluir daí.
-R9:
+R9: 
+Best Bandwidth: 0.19999999999999998
+Estimate test error our Naive Bayes: 0.10184442662389737
+Estimate test error Gaussian Naive Bayes: 0.14915797914995987
+Best Gamma: 2.4
+Estimate test error SVM: 0.07137129109863671
+Our NB vs Gaussian NB McNemars test: 40.53012048192771
+Our NB vs SVM McNemars test: 19.01388888888889
+SVM vs Gaussian NB McNemars test: 71.44186046511628
+Our NB Normal test:127+-20.9331081121884
+Gaussian NB Normal test:186+-24.656816817207723
+SVM Normal test:89+-17.818540464422934
 
 
 Q10: (Opcional) Mostre a estimativa do erro verdadeiro do classificador SVM optimizado (se fez a parte opcional do trabalho) e discuta se valeu a pena fazer essa optimização. Se não fez a parte opcional do trabalho deixe esta resposta em branco.
