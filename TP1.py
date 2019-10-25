@@ -5,8 +5,8 @@ from Mc import *;
 
 trainValues = readFromFile("TP1_train.tsv");
 testValues = readFromFile("TP1_test.tsv");
-shuffle(trainValues);
-shuffle(testValues);
+trainValues = shuffle(trainValues);
+testValues = shuffle(testValues);
 Xs,Ys = stats(trainValues);
 testX, testY = stats(testValues);
 
@@ -24,8 +24,8 @@ print('Estimate test error Gaussian Naive Bayes:', GNBScore);
 bestGamma , bestError = crossValidateGamma(trainValues,5,Xs,Ys,testX, testY);
 SVMScore,SVMPredicts = SVMGetScore(trainValues,testValues,bestGamma,Xs,Ys,testX, testY);
 
-print('Best Gamma:', bestGamma);
-print('Estimate test error SVM:', SVMScore);
+#print('Best Gamma:', bestGamma);
+#print('Estimate test error SVM:', SVMScore);
 
 #McNemar's test
 MCNBvsGNB = mcClass(predicts,GNBPredicts, list(testY));
