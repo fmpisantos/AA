@@ -10,6 +10,8 @@ def crossValidScore(trainX,trainY,validX,validY,g):
 	return (1-accuracy_score(np.array(validY),np.array(toScoreValues).flatten()));
 
 def crossValidateGamma(trainValues,k):
+	gammas = [];
+	errors = [];
 	shuffle(trainValues);
 	trainXs,trainYs = stats(trainValues);
 	kk = StratifiedKFold(k);
@@ -23,7 +25,15 @@ def crossValidateGamma(trainValues,k):
 		if validError/k < bestVError:
 			bestVError = validError/k;
 			bestGamma = gamma;
+		gammas.append(gamma);
+		errors.append(errors);
 		gamma += 0.2;
+	plt.title('SVM');
+	plt.xlabel('Gamma');
+	plt.ylabel('Error');
+	plt.plot(gammas,errors,'-r',label='Validation error');
+	plt.savefig("SVM",dpi=300);
+	plt.show();
 	return bestGamma,bestVError;
 
 def SVMGetScore(trainValues,testValues,gamma):
