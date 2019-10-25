@@ -2,6 +2,8 @@ from ourNaive import *;
 from GaussianNB import *;
 from SVMWithCrossValid import *;
 from Mc import *;
+from NormalTest import *;
+import os;
 
 trainValues = readFromFile("TP1_train.tsv");
 testValues = readFromFile("TP1_test.tsv");
@@ -35,3 +37,12 @@ SVMvsGNB = mcClass(SVMPredicts,GNBPredicts, testY);
 print('Our NB vs Gaussian NB McNemars test:', MCNBvsGNB);
 print('Our NB vs SVM McNemars test:', MCNBvsSVM);
 print('SVM vs Gaussian NB McNemars test:', SVMvsGNB);
+
+#Normal test
+MCNBErrors,normalMCNB = NormalTest(predicts,testY);
+GNBErrors,normalGNB = NormalTest(GNBPredicts,testY);
+SVMErrors,normalSVM = NormalTest(SVMPredicts,testY);
+
+print('Our NB Normal test:'+ str(MCNBErrors)+"+-"+str(normalMCNB));
+print('Gaussian NB Normal test:'+ str(GNBErrors)+"+-"+str(normalGNB));
+print('SVM Normal test:'+ str(SVMErrors)+"+-"+str(normalSVM));

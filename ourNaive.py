@@ -83,6 +83,7 @@ def kFolds(Ys,Xs,k,values):
     plt.plot(bandwidths, trainValidA, '-k', label='Validation error');
     plt.legend(loc="best");
     plt.savefig("NB", dpi=300);
+    plt.show();
     return bestBandwidth;
 
 
