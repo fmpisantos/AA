@@ -1,7 +1,7 @@
 from sklearn.naive_bayes import GaussianNB;
 from ourNaive import *;
 
-def scoreGaussian(trainValues, testValues,trainXs,trainYs,testXs, testYs):
+def scoreGaussian(trainXs,trainYs,testXs, testYs):
 	clf = GaussianNB();
 	clf.fit(trainXs,trainYs);
 	toScoreValues = [];

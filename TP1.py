@@ -28,17 +28,10 @@ print('Best Gamma:', bestGamma);
 print('Estimate test error SVM:', SVMScore);
 
 #McNemar's test
-MCNBvsGNB = mcClass(predicts,GNBPredicts, testY);
-MCNBvsSVM = mcClass(predicts,SVMPredicts, testY);
-SVMvsGNB = mcClass(SVMPredicts,GNBPredicts, testY);
+MCNBvsGNB = mcClass(predicts,GNBPredicts, list(testY));
+MCNBvsSVM = mcClass(predicts,SVMPredicts, list(testY));
+SVMvsGNB = mcClass(SVMPredicts,GNBPredicts, list(testY));
 
 print('Our NB vs Gaussian NB McNemars test:', MCNBvsGNB);
 print('Our NB vs SVM McNemars test:', MCNBvsSVM);
 print('SVM vs Gaussian NB McNemars test:', SVMvsGNB);
-
-'''
-print("------");
-print(predicts);
-print(GNBPredicts);
-print(SVMPredicts);
-'''
