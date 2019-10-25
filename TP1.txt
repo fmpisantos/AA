@@ -1,4 +1,4 @@
-Atenção:
+﻿Atenção:
 - Não edite este ficheiro em programas como Word e afins. Use exclusivamente um editor de texto simples. Em caso de dúvida, use o editor do Spyder.
 - Não altere a estrutura deste ficheiro. Preencha as respostas apenas nos espaços respectivos (a seguir à tag R#:)
 - Pode adicionar linhas no espaço para as respostas mas as respostas devem ser sucintas e directas.
@@ -6,31 +6,38 @@ Atenção:
 QUESTÔES:
 
 Q1: Considerando os dados fornecidos, explique a necessidade de standardizar os valores dos atributos.
-R1:
+R1: Visto que os atributos(variance of Wavelet Transformed image,skewness of Wavelet Transformed image, curtosis of Wavelet Transformed image, entropy of image) 
+são medidos em escalas diferentes é necessário standardizar os valores dos mesmos para uniformizar os valores.
 
 
 Q2: Explique como calculou os parâmetros para standardização e como os usou no conjunto de teste.
-R2:
+R2: Para cada feature foi calculada a média e o desvio padrão e a cada elemento das diferentes features foi subtraída o valor da média, dividindo de seguida pelo desvio padrão da respetiva feature.
 
 
 Q3: Explique como calculou a probabilidade a priori de um exemplo pertencer a uma classe (a probabilidade antes de ter em conta os valores dos atributos do exemplo) na sua implementação do classificador Naïve Bayes. Pode incluir um trecho relevante do código se ajudar a explicar.
-R3:
+R3: Dividimos a matriz com os dados pelas duas classes existentes, de seguida calculamos a probablidade à priori de um exemplo pertencer a uma classe. P(classe=0 ou 1)=ln(#dados com classe =0 ou 1/#total de dados).
 
 
 Q4: Explique como o seu classificador Naïve Bayes prevê a classe a que um exemplo de teste pertence. Pode incluir um trecho relevante do código se ajudar a explicar.
-R4:
+R4: São criadas duas listas(uma para true, outra para false) preenchidas por default com as respetivas probabilidades calculadas a priori. De seguida com o auxilio da matriz Kde calculada com o auxilio da classe KernelDensity do sklearn para todas as features em cada classe(8 no total, 4 features*2classes).
+Os valores da matriz kde são de seguida ajustados com o score_samples de modo a obter o logaritmo da distribuição de probabilidade dessa feature. Estes valores calculados pelo score_samples serão adicionados às listas criadas tendo em atenção se foi calculado como classe = 1 ou classe = 0.
+Depois das listas preenchidas e com o somatório efetuado estas duas listas são percorridas comparando cada posição para verificar qual tem maior probabilidade sendo escolhida a melhor classe para os exemplos.
 
 
 Q5: Explique que efeito tem o parâmetro de bandwidth no seu classificador.
-R5:
+R5:"The bandwidth here acts as a smoothing parameter, controlling the tradeoff between bias and variance in the result. A large bandwidth leads to a very smooth (i.e. high-bias) density distribution. A small bandwidth leads to an unsmooth (i.e. high-variance) density distribution."
+   (retirado de https://scikit-learn.org/stable/modules/density.html#kernel-density)
 
 
 Q6: Explique que efeito tem o parâmetro gamma no classificador SVM.
-R6:
+R6:"gamma defines how much influence a single training example has. The larger gamma is, the closer other examples must be to be affected."
+    (https://scikit-learn.org/stable/modules/svm.html#svm-classification)
 
 
 Q7: Explique como determinou o melhor parâmetro de bandwidth e gamma para o seu classificador e o classificador SVM. Pode incluir um trecho relevante do código se ajudar a explicar.
-R7:
+R7: Para determinar o melhor parâmetro de bandwith foi chamada a função kFolds sobre o train que para cada bandwith(começando em 0.02 até 0.6 com um incremento de 0.02) calculando o erro de validação,
+a bandwith que obtiver o menor erro é selecionada como a melhor e usada no set de teste.
+    #TODO FILIPE
 
 Q8: Explique como obteve a melhor hipótese para cada um dos classificadores depois de optimizados os parâmetros.
 R8:
