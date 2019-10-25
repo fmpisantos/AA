@@ -1,6 +1,6 @@
 from ourNaive import *;
 from GaussianNB import *;
-from SVM import *;
+from SVMWithCrossValid import *;
 
 trainValues = readFromFile("TP1_train.tsv");
 testValues = readFromFile("TP1_test.tsv");
