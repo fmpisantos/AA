@@ -30,6 +30,8 @@ def crossValidateGamma(trainValues,k):
 		if validError/k < bestVError:
 			bestVError = validError/k;
 			bestGamma = gamma;
+		gammas.append(gamma);
+		errors.append(errors);
 		gamma += 0.2;
 	plt.close();
 	plt.title('SVM');
