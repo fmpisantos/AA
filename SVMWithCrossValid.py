@@ -1,6 +1,6 @@
 from sklearn.svm import SVC;
 from ourNaive import *;
-
+import matplotlib.pyplot as pp;
 
 def crossValidScore(trainX,trainY,validX,validY,g):
 	cl = SVC(gamma=g);
@@ -29,16 +29,16 @@ def crossValidateGamma(trainValues,k,trainXs,trainYs,testXs, testYs):
 			bestVError = validError/k;
 			bestGamma = gamma;
 		gammas.append(gamma);
-		errors.append(errors);
+		errors.append(validError/k);
 		gamma += 0.2;
-	plt.close();
-	plt.title('SVM');
-	plt.xlabel('Gamma');
-	plt.ylabel('Error');
-	plt.plot(gammas,errors,'-r',label='Validation error');
-	plt.savefig("SVM",dpi=300);
-	plt.show();
+	pp.close();
+	pp.title('SVM');
+	pp.xlabel('Gamma');
+	pp.ylabel('Error');
+	pp.plot(gammas,errors,'-r',label='Validation error');
+	pp.savefig("SVM",dpi=300);
+	pp.show();
 	return bestGamma,bestVError;
 
-def SVMGetScore(trainValues,testValues,gamma,trainXs,trainYs,testXs, testYs):
+def SVMGetScore(gamma,trainXs,trainYs,testXs, testYs):
 	return crossValidScore(trainXs,trainYs,testXs,testYs,gamma);

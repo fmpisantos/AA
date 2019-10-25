@@ -17,20 +17,20 @@ print('Best Bandwidth:', bestBandwidth);
 print('Estimate test error our Naive Bayes:', score);
 
 #GaussianNB
-GNBScore,GNBPredicts = scoreGaussian(trainValues,testValues,Xs,Ys,testX, testY);
+GNBScore,GNBPredicts = scoreGaussian(Xs,Ys,testX, testY);
 
 print('Estimate test error Gaussian Naive Bayes:', GNBScore);
 #Support Vector Machine
 bestGamma , bestError = crossValidateGamma(trainValues,5,Xs,Ys,testX, testY);
-SVMScore,SVMPredicts = SVMGetScore(trainValues,testValues,bestGamma,Xs,Ys,testX, testY);
+SVMScore,SVMPredicts = SVMGetScore(bestGamma,Xs,Ys,testX, testY);
 
-#print('Best Gamma:', bestGamma);
-#print('Estimate test error SVM:', SVMScore);
+print('Best Gamma:', bestGamma);
+print('Estimate test error SVM:', SVMScore);
 
 #McNemar's test
-MCNBvsGNB = mcClass(predicts,GNBPredicts, list(testY));
-MCNBvsSVM = mcClass(predicts,SVMPredicts, list(testY));
-SVMvsGNB = mcClass(SVMPredicts,GNBPredicts, list(testY));
+MCNBvsGNB = mcClass(predicts,GNBPredicts, testY);
+MCNBvsSVM = mcClass(predicts,SVMPredicts, testY);
+SVMvsGNB = mcClass(SVMPredicts,GNBPredicts, testY);
 
 print('Our NB vs Gaussian NB McNemars test:', MCNBvsGNB);
 print('Our NB vs SVM McNemars test:', MCNBvsSVM);
