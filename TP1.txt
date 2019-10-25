@@ -40,7 +40,7 @@ a bandwith que obtiver o menor erro é selecionada como a melhor e usada no set 
     #TODO FILIPE
 
 Q8: Explique como obteve a melhor hipótese para cada um dos classificadores depois de optimizados os parâmetros.
-R8:
+R8: 
 
 
 Q9: Mostre os melhores valores dos parâmetros optimizados, a estimativa do erro verdadeiro de cada uma das hipóteses que obteve (o seu classificador e os dois fornecidos pela biblioteca), os intervalos do número esperado de erros dados pelo teste normal aproximado e os valores dos testes de McNemar e discuta o que pode concluir daí.
