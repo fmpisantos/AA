@@ -22,4 +22,4 @@ bestGamma , bestError = crossValidateGamma(trainValues,5);
 SVMScore = SVMGetScore(trainValues,testValues,bestGamma);
 
 print('Best Gamma:', bestGamma);
-print('Estimate test error our Naive Bayes:', SVMScore);
+print('Estimate test error SVM:', SVMScore);
