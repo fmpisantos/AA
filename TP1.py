@@ -1,7 +1,6 @@
 from ourNaive import *;
 from GaussianNB import *;
 from SVM import *;
-from sklearn.svm import SVC;
 
 trainValues = readFromFile("TP1_train.tsv");
 testValues = readFromFile("TP1_test.tsv");
@@ -19,8 +18,8 @@ GNBScore = scoreGaussian(trainValues,testValues);
 print('Estimate test error Gaussian Naive Bayes:', GNBScore);
 
 #Support Vector Machine
-bestGamma , bestError = crossValidateGamma(5);
-SVMScore = SVMGetScore(bestGamma);
+bestGamma , bestError = crossValidateGamma(trainValues,5);
+SVMScore = SVMGetScore(trainValues,testValues,bestGamma);
 
 print('Best Gamma:', bestGamma);
 print('Estimate test error our Naive Bayes:', SVMScore);
