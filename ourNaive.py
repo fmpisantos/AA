@@ -2,6 +2,7 @@ from sklearn.neighbors.kde import KernelDensity;
 from sklearn.naive_bayes import GaussianNB;
 from sklearn.svm import SVC;
 import numpy as np;
+import matplotlib.pyplot as plt;
 from sklearn.utils import shuffle
 from sklearn.model_selection import StratifiedKFold;
 from sklearn.metrics import accuracy_score
@@ -52,6 +53,9 @@ def score(X,Y, pTrue, pFalse,kde):
         
 #Returns Best bandwidth
 def kFolds(Ys,Xs,k,values):
+    bandwidths = [];
+    trainErrorA = [];
+    trainValidA = [];
     kf = StratifiedKFold(k);
     bandwith = 0.02;
     bestBandwidth = 0;
@@ -66,6 +70,17 @@ def kFolds(Ys,Xs,k,values):
             bestVError = vError/k;
             bestBandwidth = bandwith;
         bandwith+=0.02;
+        bandwidths.append(bandwith);
+        trainErrorA.append(tError/k);
+        trainValidA.append(vError/k);
+    plt.title('NB');
+    plt.xlabel('Bandwith');
+    plt.ylabel('Error');
+    plt.plot(bandwidths, trainErrorA, '-r', label='Training error');
+    plt.plot(bandwidths, trainValidA, '-k', label='Validation error');
+    plt.rcParams['axes.facecolor'] = 'lightgrey';
+    plt.savefig("NB", dpi=300)
+    plt.show();     
     return bestBandwidth;
 
 
